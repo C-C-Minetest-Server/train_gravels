@@ -89,7 +89,7 @@ local box = {
 
 for id, mod in pairs(slopes) do
     minetest.register_node("train_gravels:gravel_slope_" .. id, {
-        description = S("Gravel Slop @1", id),
+        description = S("Gravel Slope @1", id),
         tiles = { "default_gravel.png" },
         groups = { crumbly = 2, falling_node = 1, not_blocking_trains = 1 },
         sounds = sound_gravel,
@@ -107,6 +107,37 @@ for id, mod in pairs(slopes) do
 
     minetest.register_alias("moreblocks:gravel_slope_" .. id, "train_gravels:gravel_slope_" .. id)
 end
+
+-- 1:1 slope
+
+local box_slope = {
+    type = "fixed",
+    fixed = {
+        { -0.5, -0.5,  -0.5,  0.5, -0.25, 0.5 },
+        { -0.5, -0.25, -0.25, 0.5, 0,     0.5 },
+        { -0.5, 0,     0,     0.5, 0.25,  0.5 },
+        { -0.5, 0.25,  0.25,  0.5, 0.5,   0.5 }
+    }
+}
+
+minetest.register_node("train_gravels:gravel_slope", {
+    description = S("Gravel Slope @1", "1"),
+    tiles = { "default_gravel.png" },
+    groups = { crumbly = 2, falling_node = 1, not_blocking_trains = 1 },
+    sounds = sound_gravel,
+    drawtype = "mesh",
+    mesh = "train_gravels_slope.obj",
+    selection_box = box_slope,
+    collision_box = box_slope,
+    sunlight_propagates = false,
+    light_source = 0,
+    paramtype = "light",
+    paramtype2 = "facedir",
+    on_rotate = screwdriver and screwdriver.rotate_simple,
+    is_ground_content = false,
+})
+
+minetest.register_alias("moreblocks:gravel_slope", "train_gravels:gravel_slope")
 
 -- Advtrains Track Slope (Straight) hitbox fix
 
@@ -128,3 +159,94 @@ if minetest.get_modpath("advtrains_train_track") then
         })
     end
 end
+
+-- Recipies
+
+minetest.register_craft({
+    output = "moreblocks:gravel_stonebrick 2",
+    recipe = {
+        { "default:gravel" },
+        { "default:stonebrick" },
+    }
+})
+
+minetest.register_craft({
+    output = "moreblocks:gravel_slope 6",
+    recipe = {
+        { "", "",               "" },
+        { "", "",               "default:gravel", },
+        { "", "default:gravel", "default:gravel" },
+    }
+})
+
+minetest.register_craft({
+    output = "moreblocks:gravel_slope_2a 8",
+    recipe = {
+        { "", "",               "" },
+        { "", "",               "", },
+        { "", "default:gravel", "default:gravel" },
+    }
+})
+
+minetest.register_craft({
+    output = "moreblocks:gravel_slope_2b 4",
+    recipe = {
+        { "", "",               "default:gravel", },
+        { "", "",               "" },
+        { "", "default:gravel", "default:gravel" },
+    }
+})
+
+minetest.register_craft({
+    output = "moreblocks:gravel_slope_3a 18",
+    recipe = {
+        { "",               "",               "" },
+        { "",               "",               "", },
+        { "default:gravel", "default:gravel", "default:gravel" },
+    }
+})
+
+minetest.register_craft({
+    output = "moreblocks:gravel_slope_3b 8",
+    recipe = {
+        { "",               "",               "" },
+        { "",               "",               "default:gravel", },
+        { "default:gravel", "default:gravel", "default:gravel" },
+    }
+})
+
+minetest.register_craft({
+    output = "moreblocks:gravel_slope_3c 6",
+    recipe = {
+        { "",               "",               "default:gravel", },
+        { "",               "default:gravel", "" },
+        { "default:gravel", "default:gravel", "default:gravel" },
+    }
+})
+
+minetest.register_craft({
+    output = "default:gravel",
+    recipe = {
+        { "moreblocks:gravel_slope_2a", "", "" },
+        { "moreblocks:gravel_slope_2b", "", "" },
+        { "",                           "", "" },
+    }
+})
+
+minetest.register_craft({
+    output = "default:gravel",
+    recipe = {
+        { "moreblocks:gravel_slope_3b", "", "" },
+        { "moreblocks:gravel_slope_3b", "", "" },
+        { "",                           "", "" },
+    }
+})
+
+minetest.register_craft({
+    output = "default:gravel",
+    recipe = {
+        { "moreblocks:gravel_slope_3a", "", "" },
+        { "moreblocks:gravel_slope_3c", "", "" },
+        { "",                           "", "" },
+    }
+})
