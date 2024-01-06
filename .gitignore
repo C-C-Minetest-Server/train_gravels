@@ -11,6 +11,7 @@ luac.out
 *.os
 *.ko
 *.obj
+!models/*.obj
 *.elf
 
 # Precompiled Headers
