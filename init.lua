@@ -11,19 +11,73 @@ local sound_gravel = default.node_sound_gravel_defaults()
 
 -- Gravel Stonebrick
 
-minetest.register_node("train_gravels:gravel_stonebrick", {
-    description = S("Gravel on Stonebrick"),
-    tiles = {
-        "default_gravel.png",
-        "default_stone_brick.png",
-        "default_gravel.png^[lowpart:50:default_stone_brick.png",
-        "default_gravel.png^[lowpart:50:default_stone_brick.png",
-        "default_gravel.png^[lowpart:50:default_stone_brick.png",
-        "default_gravel.png^[lowpart:50:default_stone_brick.png"
+for name, def in pairs({
+    gravel_stonebrick = {
+        description = S("Gravel on Stone Brick"),
+        texture = "default_stone_brick.png",
+        recipe_item = "default:stonebrick",
     },
-    groups = { cracky = 3 },
-    sounds = sound_gravel,
-})
+    gravel_desert_stonebrick = {
+        description = S("Gravel on Desert Stone Brick"),
+        texture = "default_desert_stone_brick.png",
+        recipe_item = "default:desert_stonebrick",
+    },
+    gravel_sandstonebrick = {
+        description = S("Gravel on Sandstone Brick"),
+        texture = "default_sandstone_brick.png",
+        recipe_item = "default:sandstonebrick",
+    },
+    gravel_silver_sandstone_brick = {
+        description = S("Gravel on Silver Sandstone Brick"),
+        texture = "default_silver_sandstone_brick.png",
+        recipe_item = "default:silver_sandstone_brick",
+    },
+    gravel_iron_stone_bricks = {
+        description = S("Gravel on Iron Stone Bricks"),
+        texture = "moreblocks_iron_stone_bricks.png",
+        recipe_item = "moreblocks:iron_stone_bricks",
+    },
+    gravel_coal_stone_bricks = {
+        description = S("Gravel on Coal Stone Bricks"),
+        texture = "moreblocks_coal_stone_bricks.png",
+        recipe_item = "moreblocks:coal_stone_bricks",
+    },
+    gravel_granite_bricks = {
+        description = S("Gravel on Granite Bricks"),
+        texture = "technic_granite_bricks.png",
+        recipe_item = "technic:granite_bricks",
+    },
+    gravel_marble_bricks = {
+        description = S("Gravel on Marble Bricks"),
+        texture = "technic_marble_bricks.png",
+        recipe_item = "technic:marble_bricks",
+    },
+}) do
+    if minetest.registered_items[def.recipe_item] then
+        local side_texture = "default_gravel.png^[lowpart:50:" .. def.texture
+        minetest.register_node("train_gravels:" .. name, {
+            description = def.description,
+            tiles = {
+                "default_gravel.png",
+                def.texture,
+                side_texture,
+                side_texture,
+                side_texture,
+                side_texture
+            },
+            groups = { cracky = 3 },
+            sounds = sound_gravel,
+        })
+
+        minetest.register_craft({
+            output = "train_gravels:" .. name .. " 2",
+            recipe = {
+                { "default:gravel" },
+                { def.recipe_item },
+            }
+        })
+    end
+end
 
 minetest.register_alias("moreblocks:gravel_stonebrick", "train_gravels:gravel_stonebrick")
 
@@ -161,14 +215,6 @@ if minetest.get_modpath("advtrains_train_track") then
 end
 
 -- Recipies
-
-minetest.register_craft({
-    output = "moreblocks:gravel_stonebrick 2",
-    recipe = {
-        { "default:gravel" },
-        { "default:stonebrick" },
-    }
-})
 
 minetest.register_craft({
     output = "moreblocks:gravel_slope 6",
