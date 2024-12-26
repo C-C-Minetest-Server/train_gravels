@@ -52,6 +52,17 @@ for name, def in pairs({
         texture = "technic_marble_bricks.png",
         recipe_item = "technic:marble_bricks",
     },
+    gravel_stone_tile = {
+        description = S("Gravel on Stone Tile"),
+        texture = "moreblocks_split_stone_tile.png",
+        bottom_texture = "moreblocks_stone_tile.png",
+        recipe_item = "moreblocks:stone_tile",
+    },
+    gravel_split_stone_tile = {
+        description = S("Gravel on Split Stone Tile"),
+        texture = "moreblocks_split_stone_tile.png",
+        recipe_item = "moreblocks:split_stone_tile",
+    },
 }) do
     if minetest.registered_items[def.recipe_item] then
         local side_texture = "default_gravel.png^[lowpart:50:" .. def.texture
@@ -59,7 +70,7 @@ for name, def in pairs({
             description = def.description,
             tiles = {
                 "default_gravel.png",
-                def.texture,
+                def.bottom_texture or def.texture,
                 side_texture,
                 side_texture,
                 side_texture,
