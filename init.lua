@@ -5,9 +5,9 @@
     Licensed under the zlib license. See LICENSE.md for more information.
 ]]
 
-local S = minetest.get_translator("train_gravels")
+local S = core.get_translator("train_gravels")
 
-local sound_gravel = default.node_sound_gravel_defaults()
+local sound_gravel = core.global_exists("xcompat") and xcompat.sounds.node_sound_wood_defaults() or nil
 
 -- Gravel Stonebrick
 
@@ -64,9 +64,9 @@ for name, def in pairs({
         recipe_item = "moreblocks:split_stone_tile",
     },
 }) do
-    if minetest.registered_items[def.recipe_item] then
+    if core.registered_items[def.recipe_item] then
         local side_texture = "default_gravel.png^[lowpart:50:" .. def.texture
-        minetest.register_node("train_gravels:" .. name, {
+        core.register_node("train_gravels:" .. name, {
             description = def.description,
             tiles = {
                 "default_gravel.png",
@@ -80,7 +80,7 @@ for name, def in pairs({
             sounds = sound_gravel,
         })
 
-        minetest.register_craft({
+        core.register_craft({
             output = "train_gravels:" .. name .. " 2",
             recipe = {
                 { "default:gravel" },
@@ -90,7 +90,7 @@ for name, def in pairs({
     end
 end
 
-minetest.register_alias("moreblocks:gravel_stonebrick", "train_gravels:gravel_stonebrick")
+core.register_alias("moreblocks:gravel_stonebrick", "train_gravels:gravel_stonebrick")
 
 -- Gravel Slopes
 
@@ -153,7 +153,7 @@ local box = {
 }
 
 for id, mod in pairs(slopes) do
-    minetest.register_node("train_gravels:gravel_slope_" .. id, {
+    core.register_node("train_gravels:gravel_slope_" .. id, {
         description = S("Gravel Slope @1", id),
         tiles = { "default_gravel.png" },
         groups = { crumbly = 2, falling_node = 1, not_blocking_trains = 1 },
@@ -170,7 +170,7 @@ for id, mod in pairs(slopes) do
         is_ground_content = false,
     })
 
-    minetest.register_alias("moreblocks:gravel_slope_" .. id, "train_gravels:gravel_slope_" .. id)
+    core.register_alias("moreblocks:gravel_slope_" .. id, "train_gravels:gravel_slope_" .. id)
 end
 
 -- 1:1 slope
@@ -185,7 +185,7 @@ local box_slope = {
     }
 }
 
-minetest.register_node("train_gravels:gravel_slope", {
+core.register_node("train_gravels:gravel_slope", {
     description = S("Gravel Slope @1", "1"),
     tiles = { "default_gravel.png" },
     groups = { crumbly = 2, falling_node = 1, not_blocking_trains = 1 },
@@ -202,11 +202,11 @@ minetest.register_node("train_gravels:gravel_slope", {
     is_ground_content = false,
 })
 
-minetest.register_alias("moreblocks:gravel_slope", "train_gravels:gravel_slope")
+core.register_alias("moreblocks:gravel_slope", "train_gravels:gravel_slope")
 
 -- Advtrains Track Slope (Straight) hitbox fix
 
-if minetest.get_modpath("advtrains_train_track") then
+if core.get_modpath("advtrains_train_track") then
     local vst_map = {
         vst1 = "2a",
         vst2 = "2b",
@@ -217,7 +217,7 @@ if minetest.get_modpath("advtrains_train_track") then
     }
 
     for orig, id in pairs(vst_map) do
-        minetest.override_item("advtrains:dtrack_" .. orig, {
+        core.override_item("advtrains:dtrack_" .. orig, {
             walkable = true,
             selection_box = box[id],
             collision_box = box[id],
@@ -227,7 +227,7 @@ end
 
 -- Recipies
 
-minetest.register_craft({
+core.register_craft({
     output = "moreblocks:gravel_slope 6",
     recipe = {
         { "", "",               "" },
@@ -236,7 +236,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_craft({
+core.register_craft({
     output = "moreblocks:gravel_slope_2a 8",
     recipe = {
         { "", "",               "" },
@@ -245,7 +245,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_craft({
+core.register_craft({
     output = "moreblocks:gravel_slope_2b 4",
     recipe = {
         { "", "",               "default:gravel", },
@@ -254,7 +254,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_craft({
+core.register_craft({
     output = "moreblocks:gravel_slope_3a 18",
     recipe = {
         { "",               "",               "" },
@@ -263,7 +263,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_craft({
+core.register_craft({
     output = "moreblocks:gravel_slope_3b 8",
     recipe = {
         { "",               "",               "" },
@@ -272,7 +272,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_craft({
+core.register_craft({
     output = "moreblocks:gravel_slope_3c 6",
     recipe = {
         { "",               "",               "default:gravel", },
@@ -281,7 +281,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_craft({
+core.register_craft({
     output = "default:gravel",
     recipe = {
         { "moreblocks:gravel_slope_2a", "", "" },
@@ -290,7 +290,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_craft({
+core.register_craft({
     output = "default:gravel",
     recipe = {
         { "moreblocks:gravel_slope_3b", "", "" },
@@ -299,7 +299,7 @@ minetest.register_craft({
     }
 })
 
-minetest.register_craft({
+core.register_craft({
     output = "default:gravel",
     recipe = {
         { "moreblocks:gravel_slope_3a", "", "" },
