@@ -7,7 +7,7 @@
 
 local S = core.get_translator("train_gravels")
 
-local sound_gravel = core.global_exists("xcompat") and xcompat.sounds.node_sound_wood_defaults() or nil
+local sound_gravel = core.global_exists("xcompat") and xcompat.sounds.node_sound_gravel_defaults() or nil
 
 -- Gravel Stonebrick
 
